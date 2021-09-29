@@ -14,7 +14,8 @@ class Game:
         self.phrases = [Phrase("Rock And Roll"),
             Phrase("I am your father"),
             Phrase("Team Treehouse"),
-            Phrase("rock pappers scissors")] 
+            Phrase("rock pappers scissors"),
+            Phrase("return of the jedi")] 
 
     def get_random_phrase(self):
         self.random_phrase = random.choice(self.phrases)
