@@ -3,6 +3,7 @@ import random
 import string
 
 class Game:
+    phrases = ["Rock And Roll", "I am your father", "Team Treehouse", "rock pappers scissors", "return of the jedi"]
     
     def __init__(self):
         self.guesses = [" "]
@@ -53,16 +54,11 @@ class Game:
 
     def get_guess(self):
         print("")
-        self.user_guess = input("What is your guess?: ") 
+        self.user_guess = input("What is your guess?: ")
+        self.user_guess = self.user_guess.lower() 
         #begin guess validation
         if self.user_guess in self.guesses:
             print("You already entered this letter!")
-        try:
-            int(self.user_guess)
-            print("You entered a number!")
-            return self.user_guess
-        except ValueError:
-            self.user_guess = self.user_guess.lower()
         if len(self.user_guess) > 1:
             print("To many characters entered!")
             return self.user_guess   
@@ -80,12 +76,39 @@ class Game:
         else:
             print(" ")
             print("Congratulations. You have guessed the phrase!")
+            
+        
         new_game = input("Do you want to play again? Enter y/n: ")
         if new_game.lower() == "y":
             print("Starting new game... ")
             print(" ")
-            new_game = Game()
-            new_game.start()
+            self.new_phrase()
         else:
             print("Thank you for playing version 2",
             "of Cody's Phrase Hunter Game!")    
+        
+    def new_phrase(self):
+        self.guesses = [" "]
+        self.missed_guesses = 0
+        self.phrases.remove(self.active_phrase)
+        if len(self.phrases) > 1:
+            self.active_phrase = random.choice(self.phrases)
+        else:
+            print("All phrases used!")
+            exit()
+        self.welcome()
+        self.active_phrase.display(self.guesses)
+
+        while self.missed_guesses < 5 and self.active_phrase.check_complete(self.guesses) == False:
+            print(" ")
+            print(f"you have missed: {self.missed_guesses}")
+            print(" ")
+            self.get_guess()
+            self.guesses.append(self.user_guess)
+            self.active_phrase.display(self.guesses)
+            if not self.active_phrase.check_guess(self.user_guess):
+                self.missed_guesses = self.missed_guesses + 1
+            self.active_phrase.check_complete(self.guesses)
+
+        self.game_over()
+

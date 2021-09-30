@@ -21,7 +21,8 @@ class Phrase:
     def check_complete(self, guesses):
         check_1 = set(guesses)
         check_2 = set(self.phrase)
-        if check_1 == check_2:
+        check_3 = check_2.issubset(check_1)
+        if check_3 == True:    
             return True
         else:
             return False 
